@@ -20,6 +20,7 @@ var io = require('socket.io').listen(app.listen(port));
 io.sockets.on('connection', function (socket) {
 
 	// New Code 2
+    var collection = db.get('collection');
 	var col = db.collection('messages');
 	// Emit all messages
 	col.find().limit(10).sort({_id: 1}).toArray(function(err, res) {
