@@ -7,9 +7,6 @@ window.onload = function() {
     var content = document.getElementById("content");
     var name = document.getElementById("name");
 
-    // New Code
-    var col = db.collection('messages');
- 
     socket.on('message', function (data) {
         if(data.message) {
             messages.push(data);
@@ -19,12 +16,12 @@ window.onload = function() {
                 html += messages[i].message + '<br />';
             }
 
-            //New code
-            col.insert({name: name, message: message} function() {
-                // Emit latest message to ALL clients
-                client.emit('send', [data]);
-
-            }
+            // New Code 2
+            var col = db.usercollection('messages');
+            col.insert({ "message": data.message, "name": name }, function() {
+                // Emit latest message to all clients
+                socket.emit('send', [data]);
+            });
 
             content.innerHTML = html;
         } else {

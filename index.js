@@ -18,6 +18,15 @@ app.use(express.static(__dirname + '/public'));
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
+
+	// New Code 2
+	var col = db.collection('messages');
+	// Emit all messages
+	col.find().limit(10).sort({_id: 1}).toArray(function(err, res) {
+		if(err) throw err;
+		socket.emit('send', res);
+	});
+
     socket.emit('message', { message: 'welcome to the chat' });
     socket.on('send', function (data) {
         io.sockets.emit('message', data);
