@@ -20,10 +20,9 @@ var io = require('socket.io').listen(app.listen(port));
 io.sockets.on('connection', function (socket) {
 
 	// New Code 2
-    var collection = db.get('collection');
-	var col = db.collection('messages');
+	var col = db.get('messages');
 	// Emit all messages
-	col.find().limit(10).sort({_id: 1}).toArray(function(err, res) {
+	col.find({},{},function(err, res) {
 		if(err) throw err;
 		socket.emit('send', res);
 	});
@@ -33,7 +32,7 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('message', data);
 
         // New Code 2
-        col.insert({ "message": data.message, "name": name }, function() {
+        col.insert({ "message": data.message, "name": data.name }, function() {
         // Emit latest message to all clients
         socket.emit('send', [data]);
         });
