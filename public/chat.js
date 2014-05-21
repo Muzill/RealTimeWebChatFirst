@@ -16,13 +16,6 @@ window.onload = function() {
                 html += messages[i].message + '<br />';
             }
 
-            // New Code 2
-            var col = db.usercollection('messages');
-            col.insert({ "message": data.message, "name": name }, function() {
-                // Emit latest message to all clients
-                socket.emit('send', [data]);
-            });
-
             content.innerHTML = html;
         } else {
             console.log("There is a problem:", data);
