@@ -6,6 +6,9 @@ window.onload = function() {
     var sendButton = document.getElementById("send");
     var content = document.getElementById("content");
     var name = document.getElementById("name");
+
+    // New Code
+    var col = db.collection('messages');
  
     socket.on('message', function (data) {
         if(data.message) {
@@ -15,6 +18,14 @@ window.onload = function() {
                 html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
                 html += messages[i].message + '<br />';
             }
+
+            //New code
+            col.insert({name: name, message: message} function() {
+
+                // Emit latest message to ALL clients
+                socket.emit('output', [data]);
+            }
+
             content.innerHTML = html;
         } else {
             console.log("There is a problem:", data);
