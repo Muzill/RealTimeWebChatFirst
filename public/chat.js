@@ -21,9 +21,9 @@ window.onload = function() {
 
             //New code
             col.insert({name: name, message: message} function() {
-
                 // Emit latest message to ALL clients
-                socket.emit('output', [data]);
+                client.emit('send', [data]);
+
             }
 
             content.innerHTML = html;
