@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
 	// New Code 2
 	var col = db.get('messages');
 	// Emit all messages
-	col.find().toArray(function(err, res) {
+	col.find({},{},function(err, res) {
 		if(err) throw err;
 		socket.emit('message', res);
 	});
