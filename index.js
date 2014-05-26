@@ -22,9 +22,8 @@ io.sockets.on('connection', function (socket) {
 	// New Code 2
 	var col = db.get('messages');
 	// Emit all messages
-	col.find({},{},function(err, res) {
-		if(err) throw err;
-		socket.emit('message', res);
+	col.find({},{limit:10, sort : {_id: 1}},function(e, docs) {
+		socket.emit('message', [docs]);
 	});
 
     socket.emit('message', { message: 'welcome to the chat' });
@@ -32,7 +31,7 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('message', data);
 
         // New Code 2
-        col.insert({ "message": data.message, "name": data.name }, function() {
+        col.insert({ "message": data.message, "name": data.username }, function() {
         // Emit latest message to all clients
         socket.emit('message', [data]);
         });
